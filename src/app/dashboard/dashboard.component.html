@@ -1,0 +1,106 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card">
+                  <div class="card-header card-header-danger">
+                      <h4 class="card-title">Add New Item</h4>
+                  </div>
+                  <div class="card-body">
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label>Component Name</label>
+                            <input type="text" formControlName="componentName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Component Code</label>
+                            <input type="text" formControlName="code" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" formControlName="quantity" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Lab</label>
+                            <input type="text" formControlName="lab" class="form-control" />
+                        </div>
+                    </form>
+                </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Remove Item</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label>Component Code</label>
+                            <input type="text" formControlName="code" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" formControlName="quantity" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Lab</label>
+                            <input type="text" formControlName="lab" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Reason for removal</label>
+                            <input type="text" formControlName="code" class="form-control" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Transfer Item</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label>Component Code</label>
+                            <input type="text" formControlName="code" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" formControlName="quantity" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Lab</label>
+                            <input type="text" formControlName="lab" class="form-control" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Student Return</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label>Roll No</label>
+                            <input type="text" formControlName="code" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="number" formControlName="email" class="form-control"  />
+                        </div>
+                        <div class="form-group">
+                            <label>Lab</label>
+                            <input type="text" formControlName="lab" class="form-control" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>
