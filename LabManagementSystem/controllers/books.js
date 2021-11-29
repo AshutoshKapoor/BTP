@@ -3,7 +3,7 @@ const PER_PAGE = 16;
 
 
 
-exports.getBooks = async(req, res, next) => {
+exports.getBooks = async(req, res) => {
     var page = req.params.page || 1;
     const filter = req.params.filter;
     const value = req.params.value;
@@ -31,7 +31,7 @@ exports.getBooks = async(req, res, next) => {
           pages: Math.ceil(count / PER_PAGE),
           filter: filter,
           value: value,
-          user: req.user,
+         user: req.user,
        })
     } catch(err) {
        console.log(err)
