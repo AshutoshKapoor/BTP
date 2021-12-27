@@ -72,6 +72,15 @@ router.post("/admin/profile", middleware.isAdmin, adminController.postUpdateAdmi
 //admin -> update password
 router.put("/admin/update-password", middleware.isAdmin, adminController.putUpdateAdminPassword);
 
+router.get('/admin/set-focus', middleware.isAdmin, adminController.getSetFocus)
+router.post('/admin/set-focus', middleware.isAdmin, adminController.postSetFocus)
+
+router.get('/admin/settings', middleware.isAdmin, adminController.getSettings)
+router.post('/admin/settings', middleware.isAdmin, adminController.postSettings)
+
+router.post('/admin/:id/fine', middleware.isAdmin, adminController.postFine)
+
+
 // //admin -> notifications
 // router.get("/admin/notifications", (req, res) => {
 //    res.send("This route is still under development. will be added in next version");

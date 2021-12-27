@@ -25,17 +25,17 @@ router.put("/user/1/update-profile", middleware.isLoggedIn, userController.putUp
 router.get("/user/1/notification", middleware.isLoggedIn, userController.getNotification);
 
 //user -> issue a book
-router.post("/books/:book_id/issue/:user_id", middleware.isLoggedIn, userController.postIssueBook);
+router.post("/books/:book_id/issue/:user_id", middleware.isAdmin, userController.postIssueBook);
 
 //user -> show return-renew page
-router.get("/books/return-renew", middleware.isLoggedIn, userController.getShowRenewReturn);
+router.get("/books/return-renew/:id", middleware.isAdmin, userController.getShowRenewReturn);
 
 //user -> renew book
-router.post("/books/:book_id/renew", middleware.isLoggedIn, middleware.isLoggedIn, userController.postRenewBook);
+router.post("/books/:book_id/renew/:id", middleware.isAdmin, userController.postRenewBook);
 
 // user -> return book
 
-router.post("/books/:book_id/return", middleware.isLoggedIn, userController.postReturnBook);
+router.post("/books/:book_id/return/:id", middleware.isAdmin, userController.postReturnBook);
 
 //user -> create new comment
 router.post("/books/details/:book_id/comment", middleware.isLoggedIn, userController.postNewComment);

@@ -1,5 +1,6 @@
 const express = require("express"),
       router = express.Router(),
+      middleware = require("../middleware"),
       passport = require('passport');
 
 
@@ -46,5 +47,7 @@ router.get("/auth/user-logout", authController.getUserLogout);
 router.get("/auth/user-signUp", authController.getUserSignUp);
 
 router.post("/auth/user-signup", authController.postUserSignUp);
+
+router.get("/auth/verify/:email/:otp", authController.verifyEmail)
 
 module.exports = router;

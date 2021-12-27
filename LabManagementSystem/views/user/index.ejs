@@ -16,7 +16,7 @@
 
 <% include ../partials/alerts %>
 <!-- ACTIONS -->
-<section id="actions" class="py-4 mb-4 bg-light">
+<!-- <section id="actions" class="py-4 mb-4 bg-light">
   <div class="container">
     <div class="row">
       <div class="col-md-4">
@@ -40,7 +40,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 
 <section id="home" class="mt-4">
@@ -52,9 +52,9 @@
           <div class="card-body">
             <p>Name : <%=user.firstName%> <%=user.lastName%></p>
             <p>Email : <%=user.email%></p>
-            <p>Book Issued : <%=user.bookIssueInfo.length%></p>
-            <p>Due : $<%=user.fines%></p>
-            <p>Flagged : <%=user.violationFlag%></p>
+            <p>Issued Components : <%=user.bookIssueInfo.length%></p>
+            <p class="danger font-bold" style="color: red; font-weight: bold;">Due : ₹<%=user.fines%></p>
+            <p style="color: red; font-weight: bold;">Flagged : <%=user.violationFlag%></p>
             <p>Joined : <%=user.joined.toDateString() %></p>
           </div>
         </div>
@@ -105,7 +105,7 @@
                         </tr>
                  <%  } else if(activity.category == 'Fine') {%>
                          <tr>
-                          <td>You <span class="table-text">paid</span> $<%=activity.fine.amount%> fines</td>
+                          <td>You <span class="table-text">paid</span> ₹<%=activity.fine.amount%> fines</td>
                           <td><%=activity.category%></td>
                           <td><%=activity.fine.date%></td>
                           <td>

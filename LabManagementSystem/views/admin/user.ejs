@@ -6,6 +6,21 @@
     <div class="row">
         <div class="col-md-3">
             <img src="/images/<%=user.image || "profile.png" %>" class="card-img-top">
+            <h4 class="text-center card-header pb-3">Add Fine</h4>
+            <form class="p-3" action="/admin/<%=user._id%>/fine" method="POST">
+                      
+                <div class="form-group">
+                  <label class="form-control-label">Reason</label>
+                  <input type="text" name="fine[reason]" placeholder="Reason" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-control-label">Fine</label>
+                  <input type="text" name="fine[fine]" placeholder="Fine" class="form-control" required>
+                </div>
+            
+                <button type="submit" class="btn btn-primary btn-block">Add fine</button>
+            </form>
         </div>
         <div class="col-md-6">
             <h4 class="text-center card-header pb-3">Personal Informations</h4>
@@ -16,15 +31,17 @@
               <li class="list-group-item">Username :   <%=user.username%></li>
               <li class="list-group-item">Joined :    <%=user.joined.toDateString()%></li>
               <li class="list-group-item">Email :  <%=user.email%> </li>
-              <li class="list-group-item">Issued Components :
+              <li class="list-group-item">Issued Components:
                 <% issues.forEach(issue => { %>
                     <%=issue.book_info.title + ", "%>
                 <% }) %> 
               </li>
               <li class="list-group-item">Address :  <%=user.address%></li>
               <li class="list-group-item text-danger font-weight-bold">Violation Flag : <%=user.violationFlag%> </li>
-              <li class="list-group-item">Due Fines :   $<%=user.fines%></li>
+              <li class="list-group-item">Due Fines :   ₹<%=user.fines%></li>
             </ul>
+            
+
         </div>
         <div class="col-md-3">
             <div class="card" style="width: 18rem;">

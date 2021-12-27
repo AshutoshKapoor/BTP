@@ -6,7 +6,11 @@ const bookSchema = new mongoose.Schema({
    stock : Number,
    author : String,
    description : String,
-   category : String, 
+   category : String,
+   maxTaken: {
+        type: Number,
+        default: 1
+   },
    comments : [{
        type : mongoose.Schema.Types.ObjectId,
        ref : "Comment",

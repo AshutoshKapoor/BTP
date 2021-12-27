@@ -13,10 +13,12 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     trim: true,
+    unique: true
   },
   email: {
     type: String,
     trim: true,
+    unique: true
   },
   password: String,
   joined: { type: Date, default: Date.now() },
@@ -39,6 +41,7 @@ const userSchema = new mongoose.Schema({
   violationFlag: { type: Boolean, default: false },
   fines: { type: Number, default: 0 },
   isAdmin: { type: Boolean, default: false },
+  isVerfied: { type: Boolean, default: false}
 });
 
 userSchema.plugin(passportLocalMongoose);

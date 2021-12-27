@@ -234,7 +234,7 @@ exports.postIssueBook = async(req, res, next) => {
         await book.save();
         await activity.save();
 
-        res.redirect("/books/all/all/1");
+        res.redirect("/books/all/all/1/"+req.params.user_id);
     } catch(err) {
         console.log(err);
         return res.redirect("back");
@@ -243,10 +243,15 @@ exports.postIssueBook = async(req, res, next) => {
 
 // user -> show return-renew page
 exports.getShowRenewReturn = async(req, res, next) => {
-    const user_id = req.user._id;
+    let user_id
+    if(req.params.id)
+        user_id = req.params.id;
+    else
+        user_id = req.user._id;
     try {
+        const user = await User.findById(user_id);
         const issue = await Issue.find({"user_id.id": user_id});
-        res.render("user/return-renew", {user: issue});
+        res.render("user/return-renew", {user: issue,data:user,id: user_id});
     } catch (err) {
         console.log(err);
         return res.redirect("back");
@@ -265,7 +270,7 @@ exports.getShowRenewReturn = async(req, res, next) => {
 exports.postRenewBook = async(req, res, next) => {
     try {
         const searchObj = {
-            "user_id.id": req.user._id,
+            "user_id.id": req.params.id,
             "book_info.id": req.params.book_id,
         }
         const issue = await Issue.findOne(searchObj);
@@ -295,7 +300,7 @@ exports.postRenewBook = async(req, res, next) => {
         await activity.save();
         await issue.save();
 
-        res.redirect("/books/return-renew");
+        res.redirect("/books/return-renew/"+req.params.id);
     } catch (err) {
         console.log(err);
         return res.redirect("back");
@@ -316,7 +321,10 @@ exports.postReturnBook = async(req, res, next) => {
     try {
         // finding the position
         const book_id = req.params.book_id;
-        const pos = req.user.bookIssueInfo.indexOf(req.params.book_id);
+        const id = req.params.id
+        const user = await User.findById(id)
+        // const pos = req.user.bookIssueInfo.indexOf(req.params.book_id);
+        const pos = user.bookIssueInfo.indexOf(req.params.book_id);
         
         // fetching book from db and increament
         const book = await Book.findById(book_id);
@@ -324,12 +332,12 @@ exports.postReturnBook = async(req, res, next) => {
         await book.save();
 
         // removing issue 
-        const issue =  await Issue.findOne({"user_id.id": req.user._id});
+        const issue =  await Issue.findOne({"user_id.id": user._id});
         await issue.remove();
 
         // popping book issue info from user
-        req.user.bookIssueInfo.splice(pos, 1);
-        await req.user.save();
+        user.bookIssueInfo.splice(pos, 1);
+        await user.save();
 
         // logging the activity
         const activity = new Activity({
@@ -344,14 +352,14 @@ exports.postReturnBook = async(req, res, next) => {
                 returnDate: issue.book_info.returnDate,
             },
             user_id: {
-                id: req.user._id,
-                username: req.user.username,
+                id: user._id,
+                username: user.username,
             }
         });
         await activity.save();
 
         // redirecting
-        res.redirect("/books/return-renew");
+        res.redirect("/books/return-renew/"+id);
     } catch(err) {
         console.log(err);
         return res.redirect("back");

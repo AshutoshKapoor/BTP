@@ -1,0 +1,37 @@
+<% include ../partials/header %>
+
+<!--NAVIGATION BAR FOR ADMIN-->
+<% include ../partials/adminNav %>
+
+<% include ../partials/alerts %>
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card">
+              <div class="card-header text-center">
+                <h4>Add Components</h4>
+              </div>
+                <div class="card-block">
+                  <form class="p-3" action="/admin/set-focus" method="POST">
+                      
+                    <div class="form-group">
+                      <label class="form-control-label">Username</label>
+                      <input type="text" name="book[username]" placeholder="Username" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Set Focus</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+<script>
+  CKEDITOR.replace('book[description]');
+</script>
+
+<% include ../partials/footer %>

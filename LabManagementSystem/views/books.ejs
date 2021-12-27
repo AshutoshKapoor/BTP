@@ -1,13 +1,14 @@
 <% include partials/header %>
+<% include partials/adminNav %>
 
 <!--NAVIGATION BAR-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 sticky-top">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 sticky-top">
    <div class="container">
-     <% if(!currentUser) { %>
+     <% if(!user) { %>
       <a class="navbar-brand" href="/">Home</a>
-      <% } else if(!currentUser.isAdmin) { %>
+      <% } else if(!user.isAdmin) { %>
       <a class="navbar-brand" href="/user/1">Home</a>
-      <% } else if(currentUser.isAdmin) { %>
+      <% } else if(user.isAdmin) { %>
       <a class="navbar-brand" href="/admin">Home</a>
       <% } %>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,10 +22,10 @@
           </li>
         </ul>
           
-           <% if(currentUser) { %>
+           <% if(user) { %>
           <ul class="navbar-nav ml-auto">
             
-             <%if(currentUser.violationFlag) { %>
+             <%if(user.violationFlag) { %>
               <li class="nav-item align-self-center mr-2">
                 <i class="fa fa-flag text-danger"></i>
               </li>
@@ -35,7 +36,7 @@
                 <i class="fa fa-user"></i> Welcome <%=user.username%>
               </a>
               <div class="dropdown-menu">
-                <%if(!currentUser.isAdmin) { %>
+                <%if(!user.isAdmin) { %>
                   <a href="/user/1/profile" class="dropdown-item">
                     <i class="fa fa-user-circle"></i> Profile
                   </a>
@@ -64,7 +65,7 @@
           <% } %>
       </div>
   </div>
-</nav>
+</nav> -->
 
 <!--SEARCH BAR-->
 <section id="search_bar" class="my-3 py-4 bg-light">
@@ -100,8 +101,14 @@
   <div class="container">
     
     <div class="row">
-    <% for(var i = 0; i < books.length; i++) { %>
-    <div class="card col-md-3 text-center">
+      <% for(var i = 0; i < books.length; i++) { %>
+        <% let take = 0 %>
+        <% for(var j = 0; j < takenk.length; j++) { %>
+          <% if(takenk[j].toString().trim() == books[i]._id.toString().trim()){ %>
+            <% take = takenv[j] %>
+          <%}%>
+        <%}%>
+        <div class="card col-md-3 text-center">
           <div class="card-body">
             <h5 class="card-title"> <%=books[i].title%> </h5>
             <p class="text-muted">
@@ -113,26 +120,53 @@
             <p class="text-muted">
               <small class="text-muted">In stock : <%=books[i].stock%></small>
             </p>
-           
-            
-            <% if(currentUser && books[i].stock > 0) { var match = false%>
-                <% user.bookIssueInfo.forEach(book_info => { %>
-                    <% if(book_info._id.equals(books[i]._id)) { %> 
-                       <a href="#" class="btn btn-xs btn-warning disabled" role="button" aria-disabled="true">Issued!</a>
-                       <a href="/books/return-renew" class="btn btn-xs btn-success" role="button">Return/Renew</a>
-                    <% match = true; } %>
-             <% }) %>
-             
-             <% if(!match) {%>
-            <form action="/books/<%=books[i]._id%>/issue/<%=currentUser._id%>" method="POST" class="d-inline">
-               <input class="btn btn-xs btn-success" type="submit" value="Issue">
-            </form>
-            <% } %>
-            <% } %>
+            <p class="text-muted">
+              <small class="text-muted"> Taken : 
+                <!-- <% for(var j = 0; j < takenk.length; j++) { %>
+                  <% if(takenk[j].toString().trim() == books[i]._id.toString().trim()){ %>
+                    <%= takenv[j] %>
+                  <% } else {%>
+                    0
+                  <% } %>
+                <% } %>
+                <% if(takenk.length == 0) { %>
+                  0
+                <% } %> -->
+                <%=take%>/<%=books[i].maxTaken%></small>
+            </p>
+            <% console.log(takenv) %>
+            <% console.log(takenk) %>
+
+            <% if(user && books[i].stock > 0) { %>
+              <!-- <% for(var j = 0; j < takenk.length; j++) { %>
+                <% if(takenk[j].toString().trim() == books[i]._id.toString().trim()){ %>
+                  <% if(takenv[j] < books[i].maxTaken) {%>
+                    <form action="/books/<%=books[i]._id%>/issue/<%=user._id%>" method="POST" class="d-inline">
+                      <input class="btn btn-xs btn-success" type="submit" value="Issue">
+                    </form>
+                  <% }  else {%>
+                    <a href="#" class="btn btn-xs btn-danger disabled" role="button" aria-disabled="true">Max. Issued!</a>
+                  <% }%>
+                  
+                  <% if(takenk.length == 0) { %>
+                    <form action="/books/<%=books[i]._id%>/issue/<%=user._id%>" method="POST" class="d-inline">
+                      <input class="btn btn-xs btn-success" type="submit" value="Issue">
+                    </form>
+                  <% } %>
+                <% } %>
+              <% } %> -->
+
+              <% if(take < books[i].maxTaken) { %>
+                <form action="/books/<%=books[i]._id%>/issue/<%=user._id%>" method="POST" class="d-inline">
+                  <input class="btn btn-xs btn-success" type="submit" value="Issue">
+                </form>
+              <%} %>
             <a href="/books/details/<%=books[i]._id%>" class="btn btn-xs btn-primary">Details</a>
+            <a href="/books/return-renew/<%=user._id%>" class="btn btn-xs btn-success" role="button">Return/Renew</a>
+            <% } %>
           </div>
         </div>
-    <% } %>
+      <% } %>
     </div>
     <% if (pages > 0) { %>
       <nav class="ml-3 mb-2">

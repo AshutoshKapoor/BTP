@@ -7,6 +7,7 @@ const User = require('../models/user');
 const Activity = require('../models/activity');
 const Issue = require('../models/issue');
 const Comment = require('../models/comment');
+const Constants = require('../models/constants')
 
 // importing utilities
 const deleteImage = require('../utils/delete_image');
@@ -408,7 +409,7 @@ exports.postAddNewBook = async(req, res, next) => {
         const new_book = new Book(book_info);
         await new_book.save();
         req.flash("success", `A new book named ${new_book.title} is added to the inventory`);
-        res.redirect("/admin/bookInventory/all/all/1");
+        res.redirect("/admin/");
     } catch(err) {
         console.log(err);
         res.redirect('back');
@@ -454,3 +455,91 @@ exports.putUpdateAdminPassword = async (req, res, next) => {
         res.redirect('back');
     }
 };
+
+
+exports.getSetFocus = (req,res) => {
+    res.render("admin/focus");
+}
+
+exports.postSetFocus = (req,res) =>{
+    // if(req.body.books == NULL)
+    //     res.send("invalid")
+    User.findOne({username:req.body.book.username},(err,doc)=>{
+        if(err) {
+            res.send(err);
+        }
+        res.locals.focus = doc;
+        res.redirect('/admin')
+    })
+}
+
+exports.getSettings = async (req,res) => {
+    let setting = {
+        "late_fees": 14
+    }
+    const lateFees = await Constants.findOne({name: "late_fees"})
+    console.log(lateFees)
+
+    if(lateFees != undefined)
+        setting["late_fees"] = lateFees["value"];
+
+    // setting.late_fees = 1;
+    res.render("admin/settings", {
+        setting:setting
+    });
+}
+
+exports.postSettings = async (req,res) =>{
+    const settings = req.body.settings
+    console.log(req.body)
+
+    try {
+        if(Constants.findOne({name: "late_fees"}).countDocuments() != 0) {
+            const c = new Constants({
+                name: "late_fees",
+                value: settings["late_fees"]
+            })
+    
+            await c.save();
+        } else await Constants.findOneAndUpdate({name:"late_fees"}, {name:"late_fees", value: settings["late_fees"]});
+        res.redirect("/admin/settings")
+
+    } catch(err) {
+        console.log(err)
+        res.redirect("/admin/settings")
+    }
+
+}
+
+exports.postFine = async (req,res) => {
+    const id = req.params.id
+    const data = req.body.fine
+    console.log(data)
+
+    try {
+        const user = await User.findById(id);
+        const newfine = parseInt(user.fines)+ parseInt(data.fine);
+        user.fines = newfine;
+        await user.save()
+
+        res.redirect("/admin/users/1")
+    } catch(err) {
+        console.log(err)
+    }
+    // const activity = new Activity({
+    //     info: {
+    //         id: "",
+    //         title: data.reason,
+    //     },
+    //     category: "LateFine",
+    //     time: {
+    //         id: "",
+    //         issueDate: Date.now(),
+    //         returnDate: Date.now(),
+    //     },
+    //     user_id: {
+    //         id: user._id,
+    //         username: user.username,
+    //     }
+    // });
+}

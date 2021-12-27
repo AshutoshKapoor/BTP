@@ -72,8 +72,11 @@
                  <td><%=user.gender%></td>
                 <td><%=user.joined.toDateString()%></td>
                 <td><%=user.violationFlag%></td>
-                <td>$<%=user.fines%></td>
+                <td>₹<%=user.fines%></td>
                 <td>
+                  <a href="/books/all/all/1/<%=user._id%>" title="Manage User" class="btn btn-sm btn-danger">
+                    <i class="fas fa-inventory"></i>
+                  </a>
                   <%if(user.bookIssueInfo.length > 0) { %>
                   <a href="/admin/users/delete/<%=user._id%>" title="This user has components in possession. Are you sure to delete this user?" class="btn btn-sm btn-danger">
                     <i class="fa fa-trash"></i>

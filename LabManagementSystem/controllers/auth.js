@@ -1,5 +1,7 @@
 // importing libraries
 const passport = require("passport");
+const Otp = require("../models/otp")
+const nodemail = require("../utils/node_mailer")
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
@@ -68,7 +70,11 @@ exports.getUserSignUp = (req, res, next) => {
 };
 
 exports.postUserSignUp = async (req, res, next) => {
+  
   try {
+    if(req.body.email.split('@')[1] != "lnmiit.ac.in")
+      return res.render("user/userSignup")
+
     const newUser = new User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -77,13 +83,42 @@ exports.postUserSignUp = async (req, res, next) => {
       gender: req.body.gender,
       address: req.body.address,
     });
-
-    await User.register(newUser, req.body.password);
-    await passport.authenticate("local")(req, res, () => {
-      res.redirect("/user/1");
+    const otp = (Math.floor(Math.random() * (9999 - 0))).toString()
+    await User.register(newUser, req.body.password)
+    const newOtp = new Otp({
+      value: otp,
+      email: req.body.email
+    })
+    newOtp.save((err,result)=>{
+      if(err) {
+        console.log(err);
+      }
+       // send email
+      const link = 'http://localhost:3000/auth/verify/'+req.body.username+'/'+otp
+      nodemail(req.body.email,link)
+      res.redirect("/")
     });
+    // await passport.authenticate("local")(req, res, () => {
+    //   res.redirect("/user/1");
+    // });
   } catch (err) {
     console.log(err);
     return res.render("user/userSignup");
   }
 };
+
+exports.verifyEmail = (req,res)=>{
+    const email = req.params.email
+    const otp = req.params.otp
+
+    Otp.find({email: email,value: otp},(err,result)=>{
+      if(err) {
+        res.send("error")
+      }
+      User.findOneAndUpdate({username:email},{isVerfied: true},(err,user)=>{
+        if(err)
+          res.send("error")
+        res.send("verified!")
+      })
+    })
+}

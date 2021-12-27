@@ -25,3 +25,15 @@ footer {
   color: red;
   font-weight: bold;
 }
+
+.bg-primary {
+  background-color: rgb(27,103,107)!important;
+}
+
+.btn-primary {
+  background-color: rgb(27,103,107)!important;
+}
+
+.primary {
+  color: rgb(27,103,107)!important;
+}

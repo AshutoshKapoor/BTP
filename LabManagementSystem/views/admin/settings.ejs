@@ -1,0 +1,36 @@
+<% include ../partials/header %>
+
+<!--NAVIGATION BAR FOR ADMIN-->
+<% include ../partials/adminNav %>
+
+<% include ../partials/alerts %>
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Website Settings</h4>
+                </div>
+                <div class="card-block">
+                    <form class="p-3" action="/admin/settings" method="POST">
+                        
+                        <div class="form-group">
+                            <label class="form-control-label">Late Fees</label>
+                            <input type="number" name="settings[late_fees]" placeholder="Late Fees" class="form-control" required value="<%=setting.late_fees%>">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Apply</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('book[description]');
+</script> -->
+
+<% include ../partials/footer %>
