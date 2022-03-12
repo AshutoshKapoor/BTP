@@ -8,6 +8,9 @@ const Activity = require('../models/activity');
 const Issue = require('../models/issue');
 const Comment = require('../models/comment');
 const Constants = require('../models/constants')
+const Fine = require('../models/Fine')
+var mongoose = require('mongoose');
+
 
 // importing utilities
 const deleteImage = require('../utils/delete_image');
@@ -322,12 +325,15 @@ exports.getUserProfile = async (req, res, next) => {
         const issues = await Issue.find({"user_id.id": user_id});
         const comments = await Comment.find({"author.id": user_id});
         const activities = await Activity.find({"user_id.id": user_id}).sort('-entryTime');
+        const fines = await Fine.find({user: user_id})
+        console.log(fines)
 
         res.render("admin/user", {
             user: user,
             issues: issues,
             activities: activities,
             comments: comments,
+            fines: fines
         });
     } catch (err) {
         console.log(err);
@@ -514,17 +520,26 @@ exports.postSettings = async (req,res) =>{
 exports.postFine = async (req,res) => {
     const id = req.params.id
     const data = req.body.fine
-    console.log(data)
+    console.log(req.body)
 
     try {
         const user = await User.findById(id);
-        const newfine = parseInt(user.fines)+ parseInt(data.fine);
-        user.fines = newfine;
+        const f = parseInt(user.fines)+ parseInt(data.fine);
+        user.fines = f;
         await user.save()
+
+        const newFine = new Fine({
+            reason: data.reason,
+            value: parseInt(data.fine),
+            user: id
+        })
+
+        await newFine.save()
 
         res.redirect("/admin/users/1")
     } catch(err) {
         console.log(err)
+        res.send(err)
     }
     // const activity = new Activity({
     //     info: {
@@ -543,3 +558,18 @@ exports.postFine = async (req,res) => {
     //     }
     // });
 }
+
+exports.getFine = async (req, res, next) => {
+    try {
+        const id = req.params.id.toString().trim();
+        console.log("fines")
+
+        const fine = await Fine.find({user: mongoose.Types.ObjectId(id)})
+        res.render("admin/fines.ejs", {
+            fines: fine
+        });
+    } catch(err) {
+        console.log(err);
+        res.redirect('back');
+    }
+};

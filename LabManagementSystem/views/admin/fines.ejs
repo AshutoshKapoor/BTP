@@ -1,0 +1,60 @@
+<% include ../partials/header %>
+
+    
+<!--NAVIGATION BAR FOR ADMIN-->
+<% include ../partials/adminNav %>
+
+<header id="main-header" class="py-2 bg-primary text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><i class="fa fa-pencil"></i> User fines</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- fines -->
+<section id="posts">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Fines</h4>
+          </div>
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Reason</th>
+                <th>Fine</th>
+                <th>Date Posted</th>
+              </tr>
+            </thead>
+            <% console.log(fines) %>
+            <tbody>
+                <%for(let i = 0; i < fines.length; i++) { %>
+                    <tr>
+                        <td><%= fines[i].reason%></td>
+                        <% if(fines[i].value < 0) {%>
+                            <td style="color: green;"><%= -fines[i].value%></td>
+                        <% } else {%>
+                            <td style="color: red;"><%= fines[i].value%></td>
+                        <% }%>
+
+                        <!-- <td><%= fines[i].value%></td> -->
+                        <td><%= fines[i].createdAt.toDateString()%></td>
+                    </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<% include ../partials/footer %>

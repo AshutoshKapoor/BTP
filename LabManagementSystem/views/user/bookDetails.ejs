@@ -16,6 +16,9 @@
                 <small class="text-muted px-3 py-2">ID :  <%= book.ISBN %> </small>
                 <small class="text-muted px-3 py-2">Category :  <%= book.category %>  </small>
                 <small class="text-muted px-3 py-2">In Stock :  <%= book.stock %>  </small>
+                <small class="text-muted px-3 py-2">Max Borrowed :  <%= book.maxTaken %>  </small>
+                <small class="text-muted px-3 py-2">Days Borrowed:  <%= book.maxDays %>  </small>
+
                 <div class="card-body">
                     <p class="card-text">
                         <%- book.description %> 

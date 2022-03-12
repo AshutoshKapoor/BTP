@@ -28,20 +28,13 @@ exports.getBooks = async(req, res) => {
 
        // Get the count of total available book of given filter
        const count = await Book.find(searchObj).countDocuments();
-      //  let mp;
-      //  for(let i = 0; i < ; i++) {
-         
-      //    mp[books[i]._id] = 0;
-      //  }
 
        User.findById(id)
-      //  .populate('bookIssueInfo.book_info.id')
-      // .lean()
-      //  .populate({ path: 'bookIssueInfo.book_info' })
        .exec((err,doc)=>{
-         //  console.log(doc["bookIssueInfo"][0]["_id"])
-         //  let mp;
-          const mp = new Map();
+         if(err) res.send(err)
+         if(doc === undefined)
+            res.redirect('/admin')
+         const mp = new Map();
          for(let i = 0; i < doc["bookIssueInfo"].length; i++) {
             console.log(doc["bookIssueInfo"][i]["_id"])
             let temp = doc["bookIssueInfo"][i]["_id"].toString().trim()
@@ -50,7 +43,6 @@ exports.getBooks = async(req, res) => {
          }
          let k = [...mp.keys()];
          let v = [...mp.values()];
-         // console.log(mp)
          res.render("books", {
             books: books,
             current: page,
@@ -62,16 +54,9 @@ exports.getBooks = async(req, res) => {
             takenv: v
          })
       })
-      //  res.render("books", {
-      //     books: books,
-      //     current: page,
-      //     pages: Math.ceil(count / PER_PAGE),
-      //     filter: filter,
-      //     value: value,
-      //    user: req.user,
-      //  })
     } catch(err) {
        console.log(err)
+       res.redirect("/admin")
     }
 }
 
@@ -128,5 +113,35 @@ exports.getBookDetails = async(req, res, next) => {
    } catch (err) {
       console.log(err);
       return res.redirect("back");
+   }
+}
+
+exports.getLibrary = async (req,res) => {
+   var page = req.params.page || 1;
+   const filter = req.params.filter;
+   const value = req.params.value;
+   const id = req.params.id;
+   let searchObj = {};
+
+   try {
+      // Fetch books from database
+      const books = await Book
+      .find(searchObj)
+      .skip((PER_PAGE * page) - PER_PAGE)
+      .limit(PER_PAGE);
+
+
+      // Get the count of total available book of given filter
+      const count = await Book.find(searchObj).countDocuments();
+
+      res.render("library", {
+         books: books,
+         current: page,
+         pages: Math.ceil(count / PER_PAGE),
+         filter: filter,
+         value: value,
+      })
+   } catch(err) {
+      console.log(err)
    }
 }

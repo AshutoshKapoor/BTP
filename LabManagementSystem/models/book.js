@@ -7,6 +7,10 @@ const bookSchema = new mongoose.Schema({
    author : String,
    description : String,
    category : String,
+   maxDays: {
+       type: Number,
+       default: 7
+   },
    maxTaken: {
         type: Number,
         default: 1

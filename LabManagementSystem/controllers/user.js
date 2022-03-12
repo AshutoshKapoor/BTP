@@ -200,6 +200,7 @@ exports.postIssueBook = async(req, res, next) => {
                 ISBN: book.ISBN,
                 category: book.category,
                 stock: book.stock,
+                returnDate: Date.now()+book.maxDays*24*60*60*1000
             },
             user_id: {
                 id: user._id,
@@ -323,6 +324,7 @@ exports.postReturnBook = async(req, res, next) => {
         const book_id = req.params.book_id;
         const id = req.params.id
         const user = await User.findById(id)
+        console.log(user)
         // const pos = req.user.bookIssueInfo.indexOf(req.params.book_id);
         const pos = user.bookIssueInfo.indexOf(req.params.book_id);
         

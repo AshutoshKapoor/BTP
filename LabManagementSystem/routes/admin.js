@@ -79,6 +79,8 @@ router.get('/admin/settings', middleware.isAdmin, adminController.getSettings)
 router.post('/admin/settings', middleware.isAdmin, adminController.postSettings)
 
 router.post('/admin/:id/fine', middleware.isAdmin, adminController.postFine)
+router.get('/admin/users/fines/:id', middleware.isAdmin, adminController.getFine)
+
 
 
 // //admin -> notifications

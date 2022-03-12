@@ -56,9 +56,11 @@
             <p class="danger font-bold" style="color: red; font-weight: bold;">Due : ₹<%=user.fines%></p>
             <p style="color: red; font-weight: bold;">Flagged : <%=user.violationFlag%></p>
             <p>Joined : <%=user.joined.toDateString() %></p>
+            <a href="/admin/users/fines/<%=user._id%>" class="btn btn-primary btn-block">See All Fines</a>
           </div>
         </div>
       </div>
+
       <div class="col-md-9">
         
         <div class="card">

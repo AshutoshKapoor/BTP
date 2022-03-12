@@ -122,20 +122,10 @@
             </p>
             <p class="text-muted">
               <small class="text-muted"> Taken : 
-                <!-- <% for(var j = 0; j < takenk.length; j++) { %>
-                  <% if(takenk[j].toString().trim() == books[i]._id.toString().trim()){ %>
-                    <%= takenv[j] %>
-                  <% } else {%>
-                    0
-                  <% } %>
-                <% } %>
-                <% if(takenk.length == 0) { %>
-                  0
-                <% } %> -->
                 <%=take%>/<%=books[i].maxTaken%></small>
             </p>
-            <% console.log(takenv) %>
-            <% console.log(takenk) %>
+            <p><small class="text-muted">Borrow Days: <%=books[i].maxDays%></small></p>
+
 
             <% if(user && books[i].stock > 0) { %>
               <!-- <% for(var j = 0; j < takenk.length; j++) { %>
